@@ -10,6 +10,7 @@ import android.widget.LinearLayout.VERTICAL
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.contact_list_fragment.*
 
 
@@ -31,22 +32,27 @@ class ContactListFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         mActivity = activity as ContactPickerActivity
         viewModel = ViewModelProviders.of(this).get(ContactListViewModel::class.java)
-        setRecyclerAccountList()
+        setRecyclerAccountList(recyclerAllContact, mActivity.contactList, getString(R.string.all_contacts))
+        setRecyclerAccountList(recyclerRecentContact, Contact.getResendContacts(mActivity.contactList, mActivity.resendNumbers),
+                getString(R.string.recent_contacts))
     }
 
-    private fun setRecyclerAccountList() {
+
+    private fun setRecyclerAccountList(recyclerContact: RecyclerView, contactList: ArrayList<Contact>, header: String) {
         recyclerContact.layoutManager = LinearLayoutManager(mActivity)
 
-        val adapter = ContactFullListAdapter(mActivity, mActivity.contactList)
+        val adapter = ContactFullListAdapter(mActivity, contactList, header)
         adapter.setOnItemClickListener(object : ContactFullListAdapter.OnItemClickListener {
             override fun onClick(view: View, data: Contact) {
                 viewModel.selectedContact(data)
+                mActivity.onSupportNavigateUp()
             }
         })
 
         val itemDecor = ContactDividerItemDecoration(mActivity, VERTICAL, 72)
         recyclerContact.addItemDecoration(itemDecor)
         recyclerContact.adapter = adapter
+
 
         //set filter
         searchEt.addTextChangedListener(object : TextWatcher {

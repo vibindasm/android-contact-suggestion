@@ -12,6 +12,7 @@ import androidx.navigation.fragment.NavHostFragment
 class ContactPickerActivity : AppCompatActivity() {
 
     var contactList: ArrayList<Contact> = ArrayList()
+    var resendNumbers: ArrayList<String> = ArrayList()
     private val PERMISSIONS_REQUEST_READ_CONTACTS = 101
     lateinit var selectedContact: Contact
 
@@ -33,7 +34,14 @@ class ContactPickerActivity : AppCompatActivity() {
 
         } else {
             contactList = getContacts()
+            resendNumbers = getResend()
         }
+    }
+
+   private fun getResend(): ArrayList<String> {
+        var numbers = ArrayList<String>()
+        numbers.add("84217691")
+        return numbers
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>,
@@ -46,6 +54,9 @@ class ContactPickerActivity : AppCompatActivity() {
             }
         }
     }
+
+    override fun onSupportNavigateUp() =
+            mNavHostFragment.navController.navigateUp()
 
     private fun getContacts(): ArrayList<Contact> {
 
@@ -73,7 +84,8 @@ class ContactPickerActivity : AppCompatActivity() {
                             val phoneNumValue = cursorPhone.getString(
                                     cursorPhone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
 
-                            contactList.add(Contact(id, name, phoneNumValue))
+                            if(validateContacts(phoneNumValue))
+                                contactList.add(Contact(id, name, phoneNumValue))
                         }
                     }
                     cursorPhone?.close()
@@ -84,5 +96,9 @@ class ContactPickerActivity : AppCompatActivity() {
         }
         cursor?.close()
         return contactList
+    }
+
+    private fun validateContacts(phoneNumValue: String): Boolean {
+        return phoneNumValue.length >= 8
     }
 }

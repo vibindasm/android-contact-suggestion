@@ -16,7 +16,18 @@ data class Contact(var id: String, var name: String, var number: String) {
             }
             return shortName
         }
+        fun getResendContacts(contactList: ArrayList<Contact>, resendNumber: ArrayList<String>):ArrayList<Contact> {
+            val resendContacts = ArrayList<Contact>()
+            resendContacts.clear()
+            contactList.forEach {
+                if (resendNumber.contains(it.number)) {
+                    resendContacts.add(it)
+                }
+            }
+            return resendContacts
+        }
     }
 
     val shortName: String = getShortName(name)
+
 }

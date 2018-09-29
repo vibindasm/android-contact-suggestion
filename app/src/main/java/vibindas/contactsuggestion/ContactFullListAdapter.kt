@@ -19,23 +19,26 @@ import java.io.ByteArrayInputStream
 import java.io.InputStream
 
 
-class ContactFullListAdapter(val context: Context, val items: ArrayList<Contact>) : RecyclerView.Adapter<ContactListHolder>(), Filterable {
+class ContactFullListAdapter(val context: Context, val items: ArrayList<Contact>, val header: String) : RecyclerView.Adapter<ContactListHolder>(), Filterable {
 
-    var tempItems = ArrayList<Contact>()
+    var tempItems = ArrayList(items)
     lateinit var listener: OnItemClickListener
-//    var highlightPosition: Int = 0
+    var highlightPosition: Int = 0
 
     override fun onBindViewHolder(holder: ContactListHolder, position: Int) {
 
         val contactItem = items[position]
-//        if(position == highlightPosition) {
-//            holder.binding.layoutPaynowReg.setBackgroundResource(R.drawable.background_card_border)
-//        } else {
-//            holder.binding.layoutPaynowReg.setBackgroundColor(android.R.attr.selectableItemBackground)
-//        }
 
         holder.bind(contactItem)
         val thumbNail = openPhoto(contactItem.id.toLong())
+        //Show header
+        if(contactItem == items[highlightPosition]) {
+            holder.binding.header.text = header
+            holder.binding.header.visibility =View.VISIBLE
+        } else {
+            holder.binding.header.visibility =View.GONE
+        }
+
         if (thumbNail != null) {
             holder.binding.contactIcon.visibility = View.VISIBLE
             holder.binding.contactShortName.visibility = View.GONE
@@ -49,12 +52,10 @@ class ContactFullListAdapter(val context: Context, val items: ArrayList<Contact>
         }
         holder.binding.contactItem.setOnClickListener {
             listener.onClick(it, contactItem)
-            notifyDataSetChanged()
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactListHolder {
-        tempItems.addAll(items)
         val binding = DataBindingUtil.inflate<RowFullContactListItemBinding>(
                 LayoutInflater.from(parent.context),
                 R.layout.row_full_contact_list_item,
@@ -75,15 +76,15 @@ class ContactFullListAdapter(val context: Context, val items: ArrayList<Contact>
             override fun performFiltering(constraint: CharSequence?): Filter.FilterResults {
                 val filterResults = Filter.FilterResults()
                 if (constraint != null) {
-                    items?.clear()
-                    tempItems?.forEach {
+                    items.clear()
+                    tempItems.forEach {
                         if (it.name.toLowerCase().contains(constraint.toString().toLowerCase()) ||
                                 it.number.toLowerCase().contains(constraint.toString().toLowerCase())) {
-                            items?.add(it)
+                            items.add(it)
                         }
                     }
                     filterResults.values = items
-                    filterResults.count = items!!.size
+                    filterResults.count = items.size
                 }
                 return filterResults
             }

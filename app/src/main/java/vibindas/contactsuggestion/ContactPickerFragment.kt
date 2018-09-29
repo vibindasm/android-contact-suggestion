@@ -1,5 +1,6 @@
 package vibindas.contactsuggestion
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -36,6 +37,7 @@ class ContactPickerFragment : Fragment() {
     private fun bindUiToBehavior() {
 
         val adapter = ContactAdapter(mActivity, R.layout.activity_main, R.id.autoCompleteText, mActivity.contactList)
+
         mobileNumberEt.setAdapter(adapter)
 
         mobileNumberEt.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, pos, id ->
@@ -48,6 +50,10 @@ class ContactPickerFragment : Fragment() {
         contactBt.setOnClickListener {
             it.findNavController().navigate(R.id.action_contactPickerFragment_to_contactListFragment)
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
 }
