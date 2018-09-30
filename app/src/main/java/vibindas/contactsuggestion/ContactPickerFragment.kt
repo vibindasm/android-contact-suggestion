@@ -13,7 +13,7 @@ import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.contact_picker_fragment.*
 import android.R.attr.autoText
 import androidx.core.os.HandlerCompat.postDelayed
-
+import java.util.ArrayList
 
 
 class ContactPickerFragment : Fragment() {
@@ -40,7 +40,8 @@ class ContactPickerFragment : Fragment() {
 
     private fun bindUiToBehavior() {
 
-        val adapter = ContactAdapter(mActivity, R.layout.activity_main, R.id.autoCompleteText, mActivity.contactList)
+        val copyContactList = mActivity.contactList.clone() as ArrayList<Contact>
+        val adapter = ContactAdapter(mActivity, R.layout.activity_main, R.id.autoCompleteText, copyContactList )
 
 
         mobileNumberEt.setAdapter(adapter)

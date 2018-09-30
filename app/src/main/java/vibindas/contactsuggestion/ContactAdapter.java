@@ -17,7 +17,7 @@ public class ContactAdapter extends ArrayAdapter<Contact> {
     int resource, textViewResourceId;
     List<Contact> items, tempItems, suggestions;
 
-    public ContactAdapter(Context context, int resource, int textViewResourceId, List<Contact> items) {
+    public ContactAdapter(Context context, int resource, int textViewResourceId, ArrayList<Contact> items) {
         super(context, resource, textViewResourceId, items);
         this.context = context;
         this.resource = resource;
