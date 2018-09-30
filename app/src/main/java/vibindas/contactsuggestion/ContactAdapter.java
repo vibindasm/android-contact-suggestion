@@ -22,7 +22,7 @@ public class ContactAdapter extends ArrayAdapter<Contact> {
         this.context = context;
         this.resource = resource;
         this.textViewResourceId = textViewResourceId;
-        this.items = items;
+        this.items = new ArrayList<>(items);
         tempItems = new ArrayList<>(items); // this makes the difference.
         suggestions = new ArrayList<>();
     }

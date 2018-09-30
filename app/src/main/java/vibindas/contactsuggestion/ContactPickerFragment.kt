@@ -11,6 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.contact_picker_fragment.*
+import android.R.attr.autoText
+import androidx.core.os.HandlerCompat.postDelayed
+
+
 
 class ContactPickerFragment : Fragment() {
 
@@ -38,12 +42,17 @@ class ContactPickerFragment : Fragment() {
 
         val adapter = ContactAdapter(mActivity, R.layout.activity_main, R.id.autoCompleteText, mActivity.contactList)
 
+
         mobileNumberEt.setAdapter(adapter)
 
         mobileNumberEt.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, pos, id ->
             //this is the way to find selected object/item
             mActivity.selectedContact = adapterView.getItemAtPosition(pos) as Contact
             Log.d("Contact", "Selected Item $mActivity.contactList[$pos]")
+        }
+
+        if(mActivity.selectedContact != null) {
+            mobileNumberEt.postDelayed({ mobileNumberEt.setText(mActivity.selectedContact?.formattedNumber) }, 500)
         }
 
 

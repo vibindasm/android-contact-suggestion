@@ -19,15 +19,23 @@ data class Contact(var id: String, var name: String, var number: String) {
         fun getResendContacts(contactList: ArrayList<Contact>, resendNumber: ArrayList<String>):ArrayList<Contact> {
             val resendContacts = ArrayList<Contact>()
             resendContacts.clear()
+            resendNumber.reverse()
+            resendNumber.ensureCapacity(5)
             contactList.forEach {
                 if (resendNumber.contains(it.number)) {
                     resendContacts.add(it)
                 }
             }
+            resendContacts.reverse()
             return resendContacts
+        }
+
+        fun getFormattedNumber(number: String): String {
+            return number.replace(" ","").replace("-","").trim()
         }
     }
 
     val shortName: String = getShortName(name)
+    val formattedNumber: String = getFormattedNumber(number)
 
 }

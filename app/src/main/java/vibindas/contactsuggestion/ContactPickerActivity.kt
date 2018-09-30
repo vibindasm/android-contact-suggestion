@@ -14,7 +14,7 @@ class ContactPickerActivity : AppCompatActivity() {
     var contactList: ArrayList<Contact> = ArrayList()
     var resendNumbers: ArrayList<String> = ArrayList()
     private val PERMISSIONS_REQUEST_READ_CONTACTS = 101
-    lateinit var selectedContact: Contact
+    var selectedContact: Contact? = null
 
     private lateinit var mNavHostFragment: NavHostFragment
 

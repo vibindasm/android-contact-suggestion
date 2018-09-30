@@ -44,7 +44,7 @@ class ContactListFragment : Fragment() {
         val adapter = ContactFullListAdapter(mActivity, contactList, header)
         adapter.setOnItemClickListener(object : ContactFullListAdapter.OnItemClickListener {
             override fun onClick(view: View, data: Contact) {
-                viewModel.selectedContact(data)
+                mActivity.selectedContact = data
                 mActivity.onSupportNavigateUp()
             }
         })
